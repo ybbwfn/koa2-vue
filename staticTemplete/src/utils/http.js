@@ -2,7 +2,7 @@
 
 import axios from 'axios'
 import qs from 'qs'
-
+const baseURL = '/api'
 axios.interceptors.request.use(config => {
     // loading
     return config
@@ -33,10 +33,11 @@ function checkStatus(response) {
 function checkCode(res) {
     // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
     if (res.status === -404) {
-        alert(res.msg)
+        console.warn(`msg:${res.msg}--url:${res.config.url}--state:${res.status}`)
     }
     if (res.data && (!res.data.success)) {
-        alert(res.data.error_msg)
+        console.warn(`msg:${res.data.error_Msg}--url:${res.config.url}--state:${res.status}`)
+            // console.warn(`msg:${res.msg}--url:${res.config.url}--state:${res.status}`)
     }
     return res
 }
@@ -45,7 +46,7 @@ export default {
     post(url, data) {
         return axios({
             method: 'post',
-            baseURL: 'https://cnodejs.org/api/v1',
+            baseURL: baseURL,
             url,
             data: qs.stringify(data),
             timeout: 10000,
@@ -66,7 +67,7 @@ export default {
     get(url, params) {
         return axios({
             method: 'get',
-            baseURL: 'https://cnodejs.org/api/v1',
+            baseURL: baseURL,
             url,
             params, // get 请求时带的参数
             timeout: 10000,

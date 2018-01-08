@@ -1,17 +1,17 @@
 <template>
-	<div class="y-main">
-		<i-form v-ref:form-validate :model="formValidate" :rules="ruleValidate" :label-width="80">
-			<Form-item label="备忘" prop="desc">
-				<i-input :value.sync="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></i-input>
-			</Form-item>
-			<Form-item>
-				<i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
-				<i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
-			</Form-item>
-		</i-form>
-	</div>
+    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+        <FormItem label="备忘：" prop="desc">
+            <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+        </FormItem>
+        <FormItem>
+            <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
+            <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+        </FormItem>
+    </Form>
 </template>
 <script>
+import http from 'utils/http'
+// import axios from 'axios'
     export default {
         data () {
             return {
@@ -20,19 +20,34 @@
                 },
                 ruleValidate: {
                     desc: [
-                        { required: true, message: '请输入备忘', trigger: 'blur' },
-                        { type: 'string', min: 20, message: '备忘不能少于20字', trigger: 'blur' }
+                        { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
+                        { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
                     ]
                 }
             }
         },
+        mounted(){
+            this.fetchData()
+        },
         methods: {
+            fetchData:async  function () {
+                let params = {
+                    content:"11",
+                    userid:"11",
+                    insert_date:"2017",
+                    del_flag:"0"
+                }
+                const res =await  http.post('/addMemo', params)
+
+                console.log("-11--")
+                console.log(res)
+            },
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.$Message.success('提交成功!');
+                        this.$Message.success('Success!');
                     } else {
-                        this.$Message.error('表单验证失败!');
+                        this.$Message.error('Fail!');
                     }
                 })
             },
