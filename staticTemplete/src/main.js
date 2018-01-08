@@ -11,7 +11,7 @@ import 'assets/css/iview.scss';
 import $ from 'jquery';
 import * as filters from 'utils/filters';
 import * as directives from 'utils/directives';
-
+import http from 'utils/http'
 Vue.use(iView);
 // 指令
 Object.keys(directives).forEach(function(key) {
@@ -22,7 +22,37 @@ Object.keys(directives).forEach(function(key) {
 Object.keys(filters).forEach(function(key) {
     Vue.filter(key, filters[key]);
 });
-
+Vue.mixin({
+    methods: {
+        _initLoading(funcs, callback) {
+            this._showLoading();
+            Promise.all(funcs).then(() => {
+                this._hideLoading();
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            });
+        },
+        _showLoading() {
+            this.$Message.loading('正在加载中...', 0);
+        },
+        _hideLoading() {
+            this.$Message.destroy();
+        },
+        _post: async function(url, params, callback) {
+            const res = await http.post('/addMemo', params)
+            if (res.data.success) {
+                callback(res.data.data);
+            }
+        },
+        _get: async function(url, params, callback) {
+            const res = await http.get('/addMemo', params)
+            if (res.data.success) {
+                callback(res.data.data);
+            }
+        }
+    }
+})
 
 /* eslint-disable no-new */
 new Vue({

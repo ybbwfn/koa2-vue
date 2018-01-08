@@ -11,37 +11,39 @@ const pesonalCenter = resolve => { require(['page/menu/pesonalCenter/pesonalCent
 const journal = resolve => { require(['page/menu/pesonalCenter/journal/journal'], resolve); }
 const memo = resolve => { require(['page/menu/pesonalCenter/memo/memo'], resolve); }
 const mood = resolve => { require(['page/menu/pesonalCenter/mood/mood'], resolve); }
-    // 作为Main组件的子页面展示
-export const appRouter = {
-    path: '/',
-    title: '首页',
-    component: menu,
-    redirect: "/home",
-    children: [
-        // 个人中心
-        {
-            path: "/pesonalCenter",
-            component: pesonalCenter,
-            meta: setTitle('个人中心'),
-            children: [
-                { path: '/mood', meta: setTitle('心情'), component: mood },
-                { path: '/journal', meta: setTitle('日志'), component: journal },
-                { path: '/memo', meta: setTitle('备忘'), component: memo },
-            ]
-        },
-        // 学习笔记
-        { path: '/studyNotes', meta: setTitle('学习笔记'), component: studyNotes },
-    ],
 
-}
+// login
+const login = resolve => { require(['page/login/login'], resolve); }
 
-export const routers = [
-    appRouter,
+
+// 作为Main组件的子页面展示
+export const appRouter = [
+    // 个人中心
     {
-        path: '/',
-        component: menu,
+        path: "/pesonalCenter",
+        component: pesonalCenter,
+        meta: setTitle('个人中心'),
         children: [
-            { path: '/home', meta: setTitle('首页'), component: home }
+            { path: '/mood', meta: setTitle('心情'), component: mood },
+            { path: '/journal', meta: setTitle('日志'), component: journal },
+            { path: '/memo', meta: setTitle('备忘'), component: memo },
         ]
-    }
+    },
+    // 学习笔记
+    { path: '/studyNotes', meta: setTitle('学习笔记'), component: studyNotes },
+]
+
+
+export const routers = [{
+        path: '/',
+        title: '首页',
+        component: menu,
+        redirect: "/home",
+        children: [
+            { path: '/home', meta: setTitle('首页'), component: home },
+            ...appRouter
+        ]
+    },
+    { path: "/login", meta: setTitle('登录'), component: login }
+
 ];

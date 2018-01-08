@@ -81,7 +81,7 @@ export default {
         crumbList:[],//面包屑
         menuAll:[],
         iconSize:"18",
-        menuList:appRouter.children
+        menuList:appRouter
     };
   },
   methods: {

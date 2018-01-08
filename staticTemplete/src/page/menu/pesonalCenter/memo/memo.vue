@@ -27,21 +27,19 @@ import http from 'utils/http'
             }
         },
         mounted(){
-            this.fetchData()
-        },
-        methods: {
-            fetchData:async  function () {
                 let params = {
                     content:"11",
                     userid:"11",
                     insert_date:"2017",
                     del_flag:"0"
                 }
-                const res =await  http.post('/addMemo', params)
-
-                console.log("-11--")
+            this._post("/addMemo",params,function(res){
+                
                 console.log(res)
-            },
+            })
+
+        },
+        methods: {
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
