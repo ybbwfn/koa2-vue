@@ -1,27 +1,25 @@
 <template>
-	<div class="y-main">
-		<i-form v-ref:form-validate :model="formValidate" :rules="ruleValidate" :label-width="80">
-			<Form-item label="心情" prop="desc">
-				<i-input :value.sync="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></i-input>
-			</Form-item>
-			<Form-item>
-				<i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
-				<i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
-			</Form-item>
-		</i-form>
-	</div>
+    <Form ref="formData" :model="formData" :rules="ruleData" :label-width="80">
+        <FormItem label="心情" prop="content">
+            <Input v-model="formData.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+        </FormItem>
+        <FormItem>
+            <Button type="primary" @click="handleSubmit('formData')">提交</Button>
+            <Button type="ghost" @click="handleReset('formData')" style="margin-left: 8px">重置</Button>
+        </FormItem>
+    </Form>
 </template>
 <script>
     export default {
         data () {
             return {
-                formValidate: {
-                    desc: ''
+                formData: {
+                    content: ''
                 },
-                ruleValidate: {
-                    desc: [
-                        { required: true, message: '请输入个人介绍', trigger: 'blur' },
-                        { type: 'string', min: 20, message: '介绍不能少于20字', trigger: 'blur' }
+                ruleData: {
+                    content: [
+                        { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
+                        { type: 'string', min: 5, message: 'Introduce no less than 5 words', trigger: 'blur' }
                     ]
                 }
             }
@@ -30,9 +28,13 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.$Message.success('提交成功!');
+                         this._post("/addMood",this.formData,(res)=>{
+                            if(res.success){
+                                this.$Message.success('Success!');
+                            }
+                        })
                     } else {
-                        this.$Message.error('表单验证失败!');
+                        this.$Message.error('Fail!');
                     }
                 })
             },

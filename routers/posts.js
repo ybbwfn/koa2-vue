@@ -79,6 +79,7 @@ router.get('/create', async(ctx, next) => {
 
 // post 发表文章
 router.post('/create', async(ctx, next) => {
+
     var title = ctx.request.body.title
     var content = ctx.request.body.content
     var id = ctx.session.id

@@ -23,6 +23,11 @@ Object.keys(filters).forEach(function(key) {
     Vue.filter(key, filters[key]);
 });
 Vue.mixin({
+    data() {
+        return {
+            _this: this
+        }
+    },
     methods: {
         _initLoading(funcs, callback) {
             this._showLoading();
@@ -39,16 +44,34 @@ Vue.mixin({
         _hideLoading() {
             this.$Message.destroy();
         },
-        _post: async function(url, params, callback) {
-            const res = await http.post('/addMemo', params)
-            if (res.data.success) {
-                callback(res.data.data);
+        async _post(url, params, callback) {
+            const res = await http.post(url, params)
+            var data = res.data;
+            if (!!data) {
+                if (data.success) {
+                    callback(data);
+                } else if (!data.success) {
+                    this.$Message.error(data.error_msg);
+                } else {
+                    this.$Message.error(`请求失败!`);
+                }
+            } else {
+                this.$Message.error(`请求失败!`);
             }
         },
-        _get: async function(url, params, callback) {
-            const res = await http.get('/addMemo', params)
-            if (res.data.success) {
-                callback(res.data.data);
+        async _get(url, params, callback) {
+            const res = await http.get(url, params)
+            var data = res.data;
+            if (!!data) {
+                if (data.success) {
+                    callback(data);
+                } else if (!data.success) {
+                    this.$Message.error(data.error_msg);
+                } else {
+                    this.$Message.error(`请求失败!`);
+                }
+            } else {
+                this.$Message.error(`请求失败!`);
             }
         }
     }

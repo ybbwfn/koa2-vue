@@ -38,14 +38,18 @@ app.use(views(path.join(__dirname, './views'), {
 
 app.use(bodyParser())
 
-//  路由
-app.use(require('./routers/api.js').routes())
+//  接口
+app.use(require('./api/api.js').routes())
+app.use(require('./api/addUser.js').routes())
+app.use(require('./api/signin.js').routes())
+app.use(require('./api/signout.js').routes())
+
 
 //  路由
-app.use(require('./routers/signin.js').routes())
-app.use(require('./routers/signup.js').routes())
-app.use(require('./routers/posts.js').routes())
-app.use(require('./routers/signout.js').routes())
+// app.use(require('./routers/signin.js').routes())
+// app.use(require('./routers/signup.js').routes())
+// app.use(require('./routers/posts.js').routes())
+// app.use(require('./routers/signout.js').routes())
 
 
 if (module.parent) {

@@ -9,24 +9,36 @@ var pool = mysql.createPool({
 });
 
 let query = function(sql, values) {
-    return new Promise((resolve, reject) => {
-        pool.getConnection(function(err, connection) {
-            if (err) {
-                resolve(err)
-            } else {
-                connection.query(sql, values, (err, rows) => {
+        return new Promise((resolve, reject) => {
+            pool.getConnection(function(err, connection) {
+                if (err) {
+                    resolve(err)
+                } else {
+                    connection.query(sql, values, (err, rows) => {
 
-                    if (err) {
-                        reject(err)
-                    } else {
-                        resolve(rows)
-                    }
-                    connection.release()
-                })
-            }
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(rows)
+                        }
+                        connection.release()
+                    })
+                }
+            })
         })
-    })
 
+    }
+    // 注册用户
+let addUser = function(value) {
+        let _sql = "insert into users(name,pass) values(?,?);"
+        return query(_sql, value)
+    }
+    // 通过名字查找用户
+let findDataByName = function(name) {
+    let _sql = `select * from users
+     where name="${name}"
+    `
+    return query(_sql)
 }
 
 // 发表文章
@@ -83,6 +95,10 @@ let delMemo = function(id) {
 
 module.exports = {
     query,
+
+    addUser,
+    findDataByName,
+
     addJournal,
     addMood,
     addMemo,

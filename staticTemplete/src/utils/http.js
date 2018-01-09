@@ -1,5 +1,4 @@
 'use strict'
-
 import axios from 'axios'
 import qs from 'qs'
 const baseURL = '/api'
@@ -31,13 +30,13 @@ function checkStatus(response) {
 }
 
 function checkCode(res) {
-    // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
+    console.log(res)
+        // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
     if (res.status === -404) {
-        console.warn(`msg:${res.msg}--url:${res.config.url}--state:${res.status}`)
+        console.warn(`msg:${res.msg}----state:${res.status}`)
     }
     if (res.data && (!res.data.success)) {
-        console.warn(`msg:${res.data.error_Msg}--url:${res.config.url}--state:${res.status}`)
-            // console.warn(`msg:${res.msg}--url:${res.config.url}--state:${res.status}`)
+        console.warn(`msg:${res.data.error_msg}--url:${res.config.url}--state:${res.status}`)
     }
     return res
 }

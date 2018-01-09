@@ -12,8 +12,9 @@ const journal = resolve => { require(['page/menu/pesonalCenter/journal/journal']
 const memo = resolve => { require(['page/menu/pesonalCenter/memo/memo'], resolve); }
 const mood = resolve => { require(['page/menu/pesonalCenter/mood/mood'], resolve); }
 
-// login
+// login,register
 const login = resolve => { require(['page/login/login'], resolve); }
+const register = resolve => { require(['page/register/register'], resolve); }
 
 
 // 作为Main组件的子页面展示
@@ -44,6 +45,7 @@ export const routers = [{
             ...appRouter
         ]
     },
-    { path: "/login", meta: setTitle('登录'), component: login }
+    { path: "/login", meta: setTitle('登录'), component: login },
+    { path: "/register", meta: setTitle('注册'), component: register }
 
 ];

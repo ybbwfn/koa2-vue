@@ -1,62 +1,69 @@
 var router = require('koa-router')();
-var userModel = require('../lib/sql.js')
+var userModel = require('./sql.js')
 var moment = require('moment')
     // post 发表文章
 router.post('/api/addJournal', async(ctx, next) => {
         var title = ctx.request.body.title;
         var content = ctx.request.body.content;
-        var userid = ctx.request.body.userid;
+        var userid = ctx.session.id;
         var insert_date = moment().format('YYYY-MM-DD HH:mm');
         var del_flag = "0";
         console.log([title, content, userid, insert_date, del_flag])
-
-        await userModel.addJournal([title, content, userid, insert_date, del_flag])
-            .then(() => {
-                ctx.body = {
-                    data: true
-                }
-            }).catch(() => {
-                ctx.body = {
-                    data: false
-                }
-            })
+        await userModel.addJournal([title, content, userid, insert_date, del_flag]).then(() => {
+            ctx.body = {
+                data: '发表成功',
+                success: true,
+                error_msg: null
+            };
+        }).catch(() => {
+            ctx.body = {
+                data: '发表失败',
+                success: false,
+                error_msg: "发表失败"
+            };
+        })
     })
     // post 发表心情
 router.post('/api/addMood', async(ctx, next) => {
         var content = ctx.request.body.content;
-        var userid = ctx.request.body.userid;
+        var userid = ctx.session.id;
         var insert_date = moment().format('YYYY-MM-DD HH:mm');
         var del_flag = "0";
         console.log([content, userid, insert_date, del_flag])
-
         await userModel.addMood([content, userid, insert_date, del_flag]).then(() => {
             ctx.body = {
-                data: true
-            }
+                data: '发表成功',
+                success: true,
+                error_msg: null
+            };
         }).catch(() => {
             ctx.body = {
-                data: false
-            }
+                data: '发表失败',
+                success: false,
+                error_msg: "发表失败"
+            };
         })
     })
     // post 新增备忘录
 router.post('/api/addMemo', async(ctx, next) => {
     var content = ctx.request.body.content;
-    var userid = ctx.request.body.userid;
+    var userid = ctx.session.id;
     var insert_date = moment().format('YYYY-MM-DD HH:mm');
     var del_flag = "0";
     console.log([content, userid, insert_date, del_flag])
-
-    await userModel.addMemo([content, userid, insert_date, del_flag])
-        .then(() => {
-            ctx.body = {
-                data: true
-            }
-        }).catch(() => {
-            ctx.body = {
-                data: false
-            }
-        })
+    await userModel.addMemo([content, userid, insert_date, del_flag]).then(() => {
+        ctx.body = {
+            data: '发表成功',
+            success: true,
+            error_msg: null
+        };
+    }).catch(() => {
+        ctx.body = {
+            data: '发表失败',
+            success: false,
+            error_msg: "发表失败"
+        };
+    })
 })
 
 
