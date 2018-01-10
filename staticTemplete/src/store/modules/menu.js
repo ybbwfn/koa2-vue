@@ -1,5 +1,6 @@
 const menu = {
     state: {
+        session: {},
         menuList: []
     },
     mutations: {
@@ -18,6 +19,12 @@ const menu = {
         delMenu(state, index) {
             state.menuList.splice(index, 1)
         },
+        changeSession(state, obj) {
+            state.session = obj;
+        },
+        delSession(state) {
+            state.session = {};
+        }
     },
 };
 

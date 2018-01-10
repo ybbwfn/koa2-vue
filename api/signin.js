@@ -18,13 +18,14 @@ router.post('/api/signin', async(ctx, next) => {
         .then(result => {
             var res = JSON.parse(JSON.stringify(result))
             if (name === res[0]['name'] && md5(pass) === res[0]['pass']) {
+                ctx.session.user = res[0]['name']
+                ctx.session.id = res[0]['id']
                 ctx.body = {
-                    data: '登录成功',
+                    data: ctx.session,
                     success: true,
                     error_msg: null
                 };
-                ctx.session.user = res[0]['name']
-                ctx.session.id = res[0]['id']
+
                 console.log('session', ctx.session)
                 console.log('登录成功')
 

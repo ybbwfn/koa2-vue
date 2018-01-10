@@ -41,14 +41,20 @@
                     </i-col>
                     <i-col :xs="8">
                         <div class="y-infomation">
-                            <Dropdown trigger="click" style="margin-left: 20px">
-                                <a href="javascript:void(0)">
-                                    登录/登出
+                            <div class="y-touxiang y-img-100">
+                                <img src="~assets/img/touxiang.png" alt="">
+                            </div>
+                            <span class="mar-l10">欢迎您，{{userName}}</span>
+                            <Dropdown trigger="click" class="mar-l20 y-drop-right-0">
+                                
+                                <a href="javascript:void(0)" class="color-lan">
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <Dropdown-menu slot="list">
                                     <Dropdown-item>个人中心</Dropdown-item>
-                                    <Dropdown-item>退出登录</Dropdown-item>
+                                    <Dropdown-item>
+                                        <router-link to="/login">退出登录</router-link>
+                                    </Dropdown-item>
                                 </Dropdown-menu>
                             </Dropdown>
                         </div>
@@ -78,6 +84,7 @@ import { appRouter } from '@/router/router';
 export default {
   data() {
     return {
+        userName:"111",
         crumbList:[],//面包屑
         menuAll:[],
         iconSize:"18",
@@ -133,6 +140,7 @@ export default {
       }
   },
   mounted(){
+      this.userName=this.$store.state.menu.session.user;
       this.getMenuAll();
   }
 };
@@ -142,6 +150,7 @@ export default {
 $menuColor:#494E59;
 $menuWidth:180px;
 $bgColor:#F1F0EE;
+.y-touxiang{width: 40px;height: 40px;}
     .y-left{
         width: $menuWidth;
         position: absolute;

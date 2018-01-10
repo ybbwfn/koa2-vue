@@ -22,9 +22,11 @@
                     </FormItem>
                     <FormItem>
                         <Button long type="primary" @click="handleSubmit('login')">注册</Button>
-                        <Button long type="error" class="mar-t20"> 
-                            <router-link to="/login">已有账号，去登录</router-link>
-                        </Button>
+                        <router-link to="/login">
+                            <Button long type="error" class="mar-t20 iv-btn-fff"> 
+                                已有账号，去登录
+                            </Button>
+                        </router-link>
                     </FormItem>
                 </Form>
             </div>

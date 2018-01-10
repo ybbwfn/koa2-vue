@@ -41,6 +41,21 @@ let findDataByName = function(name) {
     return query(_sql)
 }
 
+// 查询心情
+let searchMood = function(value) {
+        let _sql =
+            `SELECT id,content,insert_date FROM mood
+            WHERE userid=?  
+            AND del_flag=0 
+            LIMIT ?,?;`
+        return query(_sql, value)
+    }
+    // 查询总条数
+let searchTotal = function(value) {
+    let _sql = `select count(*) as total from mood WHERE userid=?`
+    return query(_sql, value)
+}
+
 // 发表文章
 let addJournal = function(value) {
         let _sql = "insert into journal(title,content,userid,insert_date,del_flag) values(?,?,?,?,?);"
@@ -98,6 +113,9 @@ module.exports = {
 
     addUser,
     findDataByName,
+
+    searchTotal,
+    searchMood,
 
     addJournal,
     addMood,

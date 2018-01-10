@@ -17,9 +17,11 @@
                     </FormItem>
                     <FormItem>
                         <Button long type="primary" @click="handleSubmit('login')">登录</Button>
-                        <Button long type="error" class="mar-t20"> 
-                            <router-link to="/register">没有账号，去注册</router-link>
-                        </Button>
+                        <router-link to="/register">
+                            <Button long type="error" class="mar-t20 iv-btn-fff"> 
+                                没有账号，去注册
+                            </Button>
+                        </router-link>
                     </FormItem>
                 </Form>
             </div>
@@ -61,8 +63,8 @@ export default {
         signIn(){
             this._post("/signin",this.login,(res)=>{
                 if(res.success){
+                    this.$store.commit("changeSession",res.data)
                     this.$Message.success('Success!');
-                    console.log(this.$router)
                     this.$router.push("/home")
                 }
             })

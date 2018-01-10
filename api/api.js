@@ -1,7 +1,45 @@
 var router = require('koa-router')();
 var userModel = require('./sql.js')
 var moment = require('moment')
-    // post 发表文章
+
+// post 查询心情
+router.post('/api/searchMood', async(ctx, next) => {
+    var userid = ctx.session.id;
+    var currentPage = ctx.request.body.currentPage;
+    var pageSize = ctx.request.body.pageSize;
+    var total = await userModel.searchTotal([userid]).then(restotal => {
+        return restotal[0].total;
+    }).catch(() => {
+        ctx.body = {
+            data: '查询失败',
+            success: false,
+            error_msg: "查询失败"
+        };
+    });
+    console.log([userid, (currentPage - 1) * pageSize, pageSize])
+    await userModel.searchMood([userid, (currentPage - 1) * pageSize, pageSize - 0]).then(result => {
+        console.log("result")
+        console.log(result)
+        console.log("总条数")
+
+        console.log(total)
+        ctx.body = {
+            data: { data: result, total },
+            success: true,
+            error_msg: null
+        };
+
+    }).catch(() => {
+        ctx.body = {
+            data: '查询失败',
+            success: false,
+            error_msg: "查询失败"
+        };
+    })
+})
+
+
+// post 发表文章
 router.post('/api/addJournal', async(ctx, next) => {
         var title = ctx.request.body.title;
         var content = ctx.request.body.content;
