@@ -13,6 +13,8 @@ import * as filters from 'utils/filters';
 import * as directives from 'utils/directives';
 import http from 'utils/http'
 Vue.use(iView);
+var d3 = require("d3");
+Vue.prototype.$d3 = d3;
 // 指令
 Object.keys(directives).forEach(function(key) {
     Vue.directive(key, directives[key]);

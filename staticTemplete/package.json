@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "d3": "^4.12.2",
     "iview": "^2.8.0",
     "jquery": "^3.2.1",
     "js-cookie": "^2.2.0",
