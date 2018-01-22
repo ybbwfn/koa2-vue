@@ -22,9 +22,8 @@ router.post('/api/searchMood', async(ctx, next) => {
         console.log(result)
         console.log("总条数")
 
-        console.log(total)
         ctx.body = {
-            data: { data: result, total },
+            data: { data: result, total, pageCount: Math.ceil(total / pageSize) },
             success: true,
             error_msg: null
         };
@@ -37,6 +36,7 @@ router.post('/api/searchMood', async(ctx, next) => {
         };
     })
 })
+
 
 
 // post 发表文章
@@ -115,8 +115,10 @@ router.get('/api/delJournal', async(ctx, next) => {
                 }
             }).catch(() => {
                 ctx.body = {
-                    data: false
-                }
+                    data: '删除失败',
+                    success: false,
+                    error_msg: "删除失败"
+                };
             })
     })
     // 删除心情
@@ -125,8 +127,10 @@ router.get('/api/delMood', async(ctx, next) => {
     await userModel.delMood(postId)
         .then(() => {
             ctx.body = {
-                data: true
-            }
+                data: '删除成功',
+                success: true,
+                error_msg: null
+            };
         }).catch(() => {
             ctx.body = {
                 data: false

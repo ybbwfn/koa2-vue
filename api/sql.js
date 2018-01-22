@@ -56,6 +56,8 @@ let searchTotal = function(value) {
     return query(_sql, value)
 }
 
+
+
 // 发表文章
 let addJournal = function(value) {
         let _sql = "insert into journal(title,content,userid,insert_date,del_flag) values(?,?,?,?,?);"

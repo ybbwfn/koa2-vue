@@ -1,53 +1,41 @@
 <template>
     <div class="y-main">
-    <Modal
-        v-model="modalShow"
-        title="请输入您此刻的心情！"
-        :loading="loading"
-        @on-ok="addModal">
-        <Form ref="formData" :model="formData" :rules="ruleData" :label-width="80">
-            <FormItem label="心情" prop="content">
-                <Input v-model="formData.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
-            </FormItem>
-        </Form>
-    </Modal>
         <Table :data="tableData" :columns="tableColumns"></Table>
         <div style="margin: 10px;overflow: hidden">
             <div class="fl">
-                <i-button type="primary" @click="modalShow=true">新增</i-button>
-
+                <i-button type="primary">新增</i-button>
             </div>
             <div class="fr">
-                <Page 
-                :total="total" 
-                :current="currentPage" 
-                :page-size="pageSize" 
-                :page-size-opts="[5,10, 20, 30, 40]"
-                @on-change="changePage" 
-                @on-page-size-change="pageSizeChange"
-                show-total
-                show-sizer></Page>
+                <Page :total="total" :current="currentPage" :page-size="pageSize" @on-change="changePage" show-total></Page>
                 <div class="ivu-page-options">
                     <div class="ivu-page-options-elevator">
-                        跳至 <Input v-model="pageTo" @on-blur="pageToChange" style="width: 68px"></Input>页
+                        跳至页
+<Input v-model="pageTo" @on-change="pageToChange" placeholder="Enter something..." style="width: 300px"></Input>
+
                     </div>
                 </div>
             </div>
         </div>
-
+        <Form ref="formData" :model="formData" :rules="ruleData" :label-width="80">
+            <FormItem label="心情" prop="content">
+                <Input v-model="formData.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+            </FormItem>
+            <FormItem>
+                <Button type="primary" @click="handleSubmit('formData')">提交</Button>
+                <Button type="ghost" @click="handleReset('formData')" style="margin-left: 8px">重置</Button>
+            </FormItem>
+        </Form>
     </div>
 </template>
 <script>
     export default {
         data () {
             return {
-                modalShow: false,
-                loading: true,
                 total:0,
-                pageCount:0,//页数
+                pageCount:0,
                 currentPage:1,
                 pageTo:1,
-                pageSize:10,
+                pageSize:5,
                 tableData: [],
                 tableColumns: [
                     {
@@ -94,6 +82,8 @@
                         }
                     }
                 ],
+
+
                 formData: {
                     content: ''
                 },
@@ -108,22 +98,12 @@
         mounted(){
             this.query();
         },
+        watch:{
+            pageTo(){
+                
+            }
+        },
         methods: {
-            addModal () {
-                this.$refs['formData'].validate((valid) => {
-                    if (valid) {
-                         this._post("/addMood",this.formData,(res)=>{
-                            if(res.success){
-                                this.query();
-                                this.$Message.success('Success!');
-                                this.modalShow=false;
-                            }
-                        })
-                    } else {
-                        this.$Message.error('Fail!');
-                    }
-                })
-            },
             query(){
                 let parms = {
                     currentPage:this.currentPage,
@@ -136,12 +116,6 @@
                     this.pageCount = data.pageCount;
                 })
             },
-            // 每页条数
-            pageSizeChange(val){
-                this.pageSize=val;
-                this.query()
-            },
-            // 翻页
             changePage (currentPage) {
                 this.currentPage=this.pageTo=currentPage;
                 this.query();
@@ -154,7 +128,6 @@
                     this.query();
                 } else {
                     this.pageTo = "";
-
                 }
             },
             show (index) {
@@ -164,21 +137,23 @@
                 })
             },
             remove (index) {
-                 this.$Modal.confirm({
-                    title: '你确定删除这条记录吗？',
-                    content: '删除不可恢复，请确认是否删除！',
-                    onOk: () => {
-                        this._get("/delMood",{id:this.tableData[index].id},(res)=>{
+                this.data6.splice(index, 1);
+            },
+            handleSubmit (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                         this._post("/addMood",this.formData,(res)=>{
                             if(res.success){
-
-                                this.query();
-                                this.$Message.success("删除成功！")
+                                this.$Message.success('Success!');
                             }
                         })
-                        
-                    },
-                });
-                
+                    } else {
+                        this.$Message.error('Fail!');
+                    }
+                })
+            },
+            handleReset (name) {
+                this.$refs[name].resetFields();
             }
         }
     }
