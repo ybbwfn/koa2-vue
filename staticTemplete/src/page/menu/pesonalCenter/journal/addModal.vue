@@ -4,11 +4,14 @@
             v-model="modalBool" 
             :closable="false" 
             :mask-closable="false"
-            title="请输入您此刻的心情！"
+            title="新增日志！"
             @on-cancel='$emit("addcancel")'
             @on-ok="addModal">
             <Form ref="formData" :model="formData" :rules="ruleData" :label-width="80">
-                <FormItem label="心情" prop="content">
+                <FormItem label="标题" prop="title">
+                    <Input v-model="formData.title" type="text" placeholder="请输入标题"></Input>
+                </FormItem>
+                <FormItem label="内容" prop="content">
                     <Input v-model="formData.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
                 </FormItem>
             </Form>
@@ -22,7 +25,8 @@
             return {
                 modalBool: false,
                 formData: {
-                    content: ''
+                    content: '',
+                    title: ""
                 },
                 ruleData: {
                     content: [{
@@ -33,6 +37,11 @@
                         type: 'string',
                         min: 5,
                         message: 'Introduce no less than 5 words',
+                        trigger: 'blur'
+                    }],
+                    title: [{
+                        required: true,
+                        message: '不能为空',
                         trigger: 'blur'
                     }]
                 }
@@ -48,10 +57,11 @@
             addModal() {
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
-                        this._post("/addMood", this.formData, (res) => {
+                        this._post("/addJournal", this.formData, (res) => {
                             if (res.success) {
                                 this.$emit("addSubmit");
                                 this.$Message.success('Success!');
+                                this.formData.title = ''
                                 this.formData.content = ''
                             }
                         })

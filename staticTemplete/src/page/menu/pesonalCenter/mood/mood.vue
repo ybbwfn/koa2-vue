@@ -1,20 +1,11 @@
 <template>
     <div class="y-main">
-    <Modal
-        v-model="modalShow"
-        title="请输入您此刻的心情！"
-        :loading="loading"
-        @on-ok="addModal">
-        <Form ref="formData" :model="formData" :rules="ruleData" :label-width="80">
-            <FormItem label="心情" prop="content">
-                <Input v-model="formData.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
-            </FormItem>
-        </Form>
-    </Modal>
-        <Table :data="tableData" :columns="tableColumns"></Table>
+        <add-modal @addSubmit="closeAdd" @addcancel="modalShow=false" :modalShow="modalShow "></add-modal>
+        <Table @on-selection-change="selecData" :data="tableData" :columns="tableColumns"></Table>
         <div style="margin: 10px;overflow: hidden">
             <div class="fl">
-                <i-button type="primary" @click="modalShow=true">新增</i-button>
+                <i-button type="primary"  @click="modalShow=true">新增</i-button>
+                <i-button type="primary" @click="delRow">删除</i-button>
 
             </div>
             <div class="fr">
@@ -38,112 +29,100 @@
     </div>
 </template>
 <script>
+    import addModal from "./addModal";
     export default {
-        data () {
+        data() {
             return {
+                checkList: [], //选中的数据
                 modalShow: false,
-                loading: true,
-                total:0,
-                pageCount:0,//页数
-                currentPage:1,
-                pageTo:1,
-                pageSize:10,
+                total: 0,
+                pageCount: 0, //页数
+                currentPage: 1,
+                pageTo: 1,
+                pageSize: 10,
                 tableData: [],
-                tableColumns: [
-                    {
-                        title: '内容',
-                        key: 'content'
-                    },
-                    {
-                        title: '创建日期',
-                        key: 'insert_date'
-                    },
-                   {
-                        title: '操作',
-                        key: 'action',
-                        width: 150,
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.show(params.index)
-                                        }
+                tableColumns: [{
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                }, {
+                    title: '内容',
+                    key: 'content'
+                }, {
+                    title: '创建日期',
+                    key: 'insert_date'
+                }, {
+                    title: '操作',
+                    key: 'action',
+                    width: 150,
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.show(params.index)
                                     }
-                                }, 'View'),
-                                h('Button', {
-                                    props: {
-                                        type: 'error',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.remove(params.index)
-                                        }
+                                }
+                            }, 'View'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.remove(params.index)
                                     }
-                                }, 'Delete')
-                            ]);
-                        }
+                                }
+                            }, 'Delete')
+                        ]);
                     }
-                ],
-                formData: {
-                    content: ''
-                },
-                ruleData: {
-                    content: [
-                        { required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
-                        { type: 'string', min: 5, message: 'Introduce no less than 5 words', trigger: 'blur' }
-                    ]
-                }
+                }],
             }
         },
-        mounted(){
+        components: {
+            addModal
+        },
+        mounted() {
             this.query();
         },
         methods: {
-            addModal () {
-                this.$refs['formData'].validate((valid) => {
-                    if (valid) {
-                         this._post("/addMood",this.formData,(res)=>{
-                            if(res.success){
-                                this.query();
-                                this.$Message.success('Success!');
-                                this.modalShow=false;
-                            }
-                        })
-                    } else {
-                        this.$Message.error('Fail!');
-                    }
-                })
-            },
-            query(){
+            query() {
                 let parms = {
-                    currentPage:this.currentPage,
-                    pageSize:this.pageSize
+                    currentPage: this.currentPage,
+                    pageSize: this.pageSize
                 }
-                this._post("/searchMood",parms ,(res)=>{
-                    let data=res.data;
-                    this.tableData=data.data;
-                    this.total=data.total;
+                this._post("/searchMood", parms, (res) => {
+                    let data = res.data;
+                    this.tableData = data.data;
+                    this.total = data.total;
                     this.pageCount = data.pageCount;
                 })
             },
+            closeAdd() {
+                this.modalShow = false;
+                this.query();
+            },
+            // 选择的数据
+            selecData(data) {
+                this.checkList = data;
+            },
             // 每页条数
-            pageSizeChange(val){
-                this.pageSize=val;
+            pageSizeChange(val) {
+                this.pageSize = val;
                 this.query()
             },
             // 翻页
-            changePage (currentPage) {
-                this.currentPage=this.pageTo=currentPage;
+            changePage(currentPage) {
+                this.currentPage = this.pageTo = currentPage;
                 this.query();
             },
             //跳转目标页
@@ -157,28 +136,57 @@
 
                 }
             },
-            show (index) {
+            show(index) {
                 this.$Modal.info({
                     title: 'User Info',
                     content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
                 })
             },
-            remove (index) {
-                 this.$Modal.confirm({
+            // 删除单条
+            remove(index) {
+                this.$Modal.confirm({
                     title: '你确定删除这条记录吗？',
                     content: '删除不可恢复，请确认是否删除！',
                     onOk: () => {
-                        this._get("/delMood",{id:this.tableData[index].id},(res)=>{
-                            if(res.success){
-
+                        // var params=JSON.stringify([this.tableData[index].id]);
+                        this._get("/delMood", {
+                            id: this.tableData[index].id
+                        }, (res) => {
+                            if (res.success) {
                                 this.query();
                                 this.$Message.success("删除成功！")
                             }
                         })
-                        
+
                     },
                 });
-                
+            },
+            // 删除多条
+            delRow() {
+                if (this.checkList.length > 0) {
+                    this.$Modal.confirm({
+                        title: '你确定删除所选记录吗？',
+                        content: '删除不可恢复，请确认是否删除！',
+                        onOk: () => {
+                            var arr = this.checkList.map((v) => {
+                                return v.id
+                            })
+                            var params = JSON.stringify(arr);
+                            this._get("/delMood", {
+                                id: params
+                            }, (res) => {
+                                if (res.success) {
+                                    this.checkList = [];
+                                    this.query();
+                                    this.$Message.success("删除成功！")
+                                }
+                            })
+
+                        },
+                    });
+                } else {
+                    this.$Message.info("请选择要删除的记录！")
+                }
             }
         }
     }

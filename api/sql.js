@@ -50,9 +50,27 @@ let searchMood = function(value) {
             LIMIT ?,?;`
         return query(_sql, value)
     }
+    // 查询备忘录
+let searchMemo = function(value) {
+        let _sql =
+            `SELECT id,content,insert_date FROM memo
+            WHERE userid=?  
+            AND del_flag=0 
+            LIMIT ?,?;`
+        return query(_sql, value)
+    }
+    // 查询日志
+let searchJournal = function(value) {
+        let _sql =
+            `SELECT id,title,content,insert_date FROM journal
+            WHERE userid=?  
+            AND del_flag=0 
+            LIMIT ?,?;`
+        return query(_sql, value)
+    }
     // 查询总条数
-let searchTotal = function(value) {
-    let _sql = `select count(*) as total from mood WHERE userid=?`
+let searchTotal = function(value, tableName) {
+    let _sql = `select count(*) as total from ${tableName} WHERE userid=?`
     return query(_sql, value)
 }
 
@@ -95,18 +113,18 @@ let updateMemo = function(values) {
 
 
 // 删除文章
-let delJournal = function(id) {
-        let _sql = `delete from journal where id = ${id}`
+let delJournal = function(idList) {
+        let _sql = `delete from journal where id in (${idList})`
         return query(_sql)
     }
     // 删除心情
-let delMood = function(id) {
-        let _sql = `delete from mood where id = ${id}`
+let delMood = function(idList) {
+        let _sql = `delete from mood where id in (${idList})`
         return query(_sql)
     }
     // 删除备忘
-let delMemo = function(id) {
-    let _sql = `delete from memo where id = ${id}`
+let delMemo = function(idList) {
+    let _sql = `delete from memo where id in (${idList})`
     return query(_sql)
 }
 
@@ -118,6 +136,8 @@ module.exports = {
 
     searchTotal,
     searchMood,
+    searchMemo,
+    searchJournal,
 
     addJournal,
     addMood,

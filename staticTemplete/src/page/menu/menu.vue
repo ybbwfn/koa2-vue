@@ -16,194 +16,203 @@
                             <Icon type="ios-paper"></Icon>
                             {{item.meta.title}}
                         </template>
-                        <template v-for="childrenList in item.children">
+<template v-for="childrenList in item.children">
                             <MenuItem :name="childrenList.path">{{childrenList.meta.title}}</MenuItem>
                         </template>
-                    </Submenu>
-                </template>
-            </Menu>
-        </div>
-        <!-- 右 -->
-        <div class="y-right">
-            <!-- header页头 -->
-   
-                <Row class="y-header">
-                    <i-col :xs="16">
-                        <i-button type="text" icon="navicon" size="large" class="font30"></i-button>
-                        <div class="y-crumb">
-                            <Breadcrumb>
-                                <Breadcrumb-item href="/">首页</Breadcrumb-item>
-                                <Breadcrumb-item v-for="item in crumbList" :href="item.path" :key="item.path">
-                                    {{item.meta.title}}
-                                </Breadcrumb-item>
-                            </Breadcrumb>
-                        </div>
-                    </i-col>
-                    <i-col :xs="8">
-                        <div class="y-infomation">
-                            <div class="y-touxiang y-img-100">
-                                <img src="~assets/img/touxiang.png" alt="">
-                            </div>
-                            <span class="mar-l10">欢迎您，{{userName}}</span>
-                            <Dropdown trigger="click" class="mar-l20 y-drop-right-0">
-                                
-                                <a href="javascript:void(0)" class="color-lan">
-                                    <Icon type="arrow-down-b"></Icon>
-                                </a>
-                                <Dropdown-menu slot="list">
-                                    <Dropdown-item>个人中心</Dropdown-item>
-                                    <Dropdown-item>
-                                        <router-link to="/login">退出登录</router-link>
-                                    </Dropdown-item>
-                                </Dropdown-menu>
-                            </Dropdown>
-                        </div>
-                    </i-col>
-                </Row>
-            <!-- tab标签 -->
-            <div class="y-tab">
-                <router-link to="/home">
-                    <Tag type="dot" closable color="blue">首页</Tag>
-                </router-link>
-                <template v-for="(item,index) in tagList">
+</Submenu>
+</template>
+</Menu>
+</div>
+<!-- 右 -->
+<div class="y-right">
+    <!-- header页头 -->
+
+    <Row class="y-header">
+        <i-col :xs="16">
+            <i-button type="text" icon="navicon" size="large" class="font30"></i-button>
+            <div class="y-crumb">
+                <Breadcrumb>
+                    <Breadcrumb-item href="/">首页</Breadcrumb-item>
+                    <Breadcrumb-item v-for="item in crumbList" :href="item.path" :key="item.path">
+                        {{item.meta.title}}
+                    </Breadcrumb-item>
+                </Breadcrumb>
+            </div>
+        </i-col>
+        <i-col :xs="8">
+            <div class="y-infomation">
+                <div class="y-touxiang y-img-100">
+                    <img src="~assets/img/touxiang.png" alt="">
+                </div>
+                <span class="mar-l10">欢迎您，{{userName}}</span>
+                <Dropdown trigger="click" class="mar-l20 y-drop-right-0">
+
+                    <a href="javascript:void(0)" class="color-lan">
+                        <Icon type="arrow-down-b"></Icon>
+                    </a>
+                    <Dropdown-menu slot="list">
+                        <Dropdown-item>个人中心</Dropdown-item>
+                        <Dropdown-item>
+                            <router-link to="/login">退出登录</router-link>
+                        </Dropdown-item>
+                    </Dropdown-menu>
+                </Dropdown>
+            </div>
+        </i-col>
+    </Row>
+    <!-- tab标签 -->
+    <div class="y-tab">
+        <router-link to="/home">
+            <Tag type="dot" closable color="blue">首页</Tag>
+        </router-link>
+        <template v-for="(item,index) in tagList">
                     <Tag type="dot" closable @on-close="tagClose(index)">
                         <router-link :to="item.path" >{{item.meta.title}}</router-link>
                     </Tag>
                 </template>
 
-            </div>
-            <!-- main主体 -->
-            <div class="y-main-wrap">
-                <router-view/>
-            </div>
-        </div>
     </div>
+    <!-- main主体 -->
+    <div class="y-main-wrap">
+        <router-view/>
+    </div>
+</div>
+</div>
 </template>
 <script>
-import { appRouter } from '@/router/router';
-export default {
-  data() {
-    return {
-        userName:"111",
-        crumbList:[],//面包屑
-        menuAll:[],
-        iconSize:"18",
-        menuList:appRouter
-    };
-  },
-  methods: {
-    getMenuAll(){
-        this.menuAll=[];
-        for(var item of this.menuList){
-            if(item.children){
-                this.menuAll.push(...item.children)
-            }else{
-                this.menuAll.push(item)
-            }
-        }
-    },
-    tagClose(index){
-        this.$store.commit("delMenu",index)
-    },
-    menuSelect(selectList) {
-        var checkRouter=this.menuAll.filter((v,i) => (selectList==v.path))[0]
-        this.$store.commit("pushMenu",checkRouter)
-        this.$router.push(checkRouter.path)
-    }
-  },
-  computed:{
-    tagList:function(){
-        return this.$store.state.menu.menuList
-    },
-    activeName:function(){
-        return this.$route.path;
-    }
-  },
-  watch:{
-      activeName(newPath){
-        for(var i=0;i<this.menuList.length;i++){
-            if(!this.menuList[i].children){
-                if(this.menuList[i].path==newPath){
-                    this.crumbList=[this.menuList[i]];
-                    break;
+    import {
+        appRouter
+    } from '@/router/router';
+    export default {
+        data() {
+            return {
+                userName: "111",
+                crumbList: [], //面包屑
+                menuAll: [],
+                iconSize: "18",
+                menuList: appRouter
+            };
+        },
+        methods: {
+            getMenuAll() {
+                this.menuAll = [];
+                for (var item of this.menuList) {
+                    if (item.children) {
+                        this.menuAll.push(...item.children)
+                    } else {
+                        this.menuAll.push(item)
+                    }
                 }
-            }else{
-                var childrenList=this.menuList[i].children;
-                for(var j=0;j<childrenList.length;j++){
-                    if(childrenList[j].path==newPath){
-                        this.crumbList=[this.menuList[i],childrenList[j]]
-                        break;
+            },
+            tagClose(index) {
+                this.$store.commit("delMenu", index)
+            },
+            menuSelect(selectList) {
+                var checkRouter = this.menuAll.filter((v, i) => (selectList == v.path))[0]
+                this.$store.commit("pushMenu", checkRouter)
+                this.$router.push(checkRouter.path)
+            }
+        },
+        computed: {
+            tagList: function() {
+                return this.$store.state.menu.menuList
+            },
+            activeName: function() {
+                return this.$route.path;
+            }
+        },
+        watch: {
+            activeName(newPath) {
+                for (var i = 0; i < this.menuList.length; i++) {
+                    if (!this.menuList[i].children) {
+                        if (this.menuList[i].path == newPath) {
+                            this.crumbList = [this.menuList[i]];
+                            break;
+                        }
+                    } else {
+                        var childrenList = this.menuList[i].children;
+                        for (var j = 0; j < childrenList.length; j++) {
+                            if (childrenList[j].path == newPath) {
+                                this.crumbList = [this.menuList[i], childrenList[j]]
+                                break;
+                            }
+                        }
                     }
                 }
             }
+        },
+        mounted() {
+            this.userName = this.$store.state.menu.session.user;
+            this.getMenuAll();
         }
-      }
-  },
-  mounted(){
-      this.userName=this.$store.state.menu.session.user;
-      this.getMenuAll();
-  }
-};
+    };
 </script>
 
 <style lang="scss" scoped>
-$menuColor:#494E59;
-$menuWidth:180px;
-$bgColor:#F1F0EE;
-.y-touxiang{width: 40px;height: 40px;}
-    .y-left{
+    $menuColor:#494E59;
+    $menuWidth:180px;
+    $bgColor:#F1F0EE;
+    .y-touxiang {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .y-left {
         width: $menuWidth;
         position: absolute;
         top: 0;
         left: 0;
-        bottom:0;
+        bottom: 0;
         background: $menuColor;
-        .menu-title{
+        .menu-title {
             height: 60px;
             background: $menuColor;
-            padding:8px;
-            img{
+            padding: 8px;
+            img {
                 height: 44px;
                 width: auto;
-                
             }
         }
     }
-    .y-right{
+    
+    .y-right {
         margin-left: $menuWidth;
     }
-    .y-header{
+    
+    .y-header {
         height: 60px;
         background: #fff;
         position: relative;
-        box-shadow: 0 2px 1px 1px hsla(0,0%,39%,.1);
-        .y-crumb{
+        box-shadow: 0 2px 1px 1px hsla(0, 0%, 39%, .1);
+        .y-crumb {
             display: inline-block;
         }
-        .y-infomation{
+        .y-infomation {
             height: 60px;
             line-height: 60px;
             text-align: right;
-            margin-right: 20px;            
+            margin-right: 20px;
         }
     }
-    .y-main-wrap,.y-tab{
+    
+    .y-main-wrap,
+    .y-tab {
         background-color: $bgColor;
     }
-    .y-tab{
+    
+    .y-tab {
         height: 36px;
-        padding:2px 10px;
+        padding: 2px 10px;
         overflow: hidden;
     }
-    .y-main-wrap{
+    
+    .y-main-wrap {
         position: absolute;
         top: 100px;
         left: $menuWidth;
         right: 0;
         bottom: 0;
-        padding:10px;
+        padding: 10px;
         overflow: auto;
     }
-
 </style>
-

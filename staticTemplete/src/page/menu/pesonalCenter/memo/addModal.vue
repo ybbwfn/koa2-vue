@@ -4,7 +4,7 @@
             v-model="modalBool" 
             :closable="false" 
             :mask-closable="false"
-            title="请输入您此刻的心情！"
+            title="请输入你要记住的事情！"
             @on-cancel='$emit("addcancel")'
             @on-ok="addModal">
             <Form ref="formData" :model="formData" :rules="ruleData" :label-width="80">
@@ -48,7 +48,7 @@
             addModal() {
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
-                        this._post("/addMood", this.formData, (res) => {
+                        this._post("/addMemo", this.formData, (res) => {
                             if (res.success) {
                                 this.$emit("addSubmit");
                                 this.$Message.success('Success!');
