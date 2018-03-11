@@ -14,6 +14,7 @@ const mood = resolve => { require(['page/menu/pesonalCenter/mood/mood'], resolve
 
 // login,register
 const login = resolve => { require(['page/login/login'], resolve); }
+const ceshi = resolve => { require(['page/ceshi/ceshi'], resolve); }
 const register = resolve => { require(['page/register/register'], resolve); }
 
 
@@ -46,6 +47,7 @@ export const routers = [{
         ]
     },
     { path: "/login", meta: setTitle('登录'), component: login },
-    { path: "/register", meta: setTitle('注册'), component: register }
+    { path: "/ceshi", meta: setTitle('测试页面'), component: ceshi },
+    { path: "/register", meta: setTitle('注册'), component: register },
 
 ];
