@@ -1,14 +1,18 @@
-var arr2=[];
-arr2.push({
+var arr8888=[];
+arr8888.push({
     name:'张三',
     age:'3',
 })
-arr2.push({
-    name:'6666',
-    age:'666666',
+arr8888.push({
+    name:'77777',
+    age:'77777',
 })
-arr2.push({
+arr8888.push({
+    name:'888888',
+    age:'888888888',
+})
+arr8888.push({
     name:'李四',
     age:'4',
 })
-console.log(arr2)
+console.log(arr8888)
