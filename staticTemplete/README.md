@@ -1,6 +1,7 @@
 # statichtml
 
 > A Vue.js project
+> branch yn
 
 ## Build Setup
 
