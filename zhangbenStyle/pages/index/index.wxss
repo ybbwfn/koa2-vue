@@ -1,0 +1,28 @@
+page{height:100%;background: #fff;}
+.y-header,
+.y-content{
+	padding: 30rpx;
+}
+.y-header{
+	height: 300rpx;
+	line-height: 300rpx;
+}
+.y-header-box{
+	width: 300rpx;
+	height: 100rpx;
+	border: 1px solid #ccc;
+	border-radius: 100rpx;
+}
+.y-list-cell{
+	padding: 30rpx 0;
+	border-bottom: 1px solid #ccc;
+	zoom:1
+}
+.y-list-cell:after{content:"";display:block;clear:both}
+.y-list-cell:last-child{
+	border: none;
+}
+.y-list-cell .y-list-title{
+	width: 200rpx;
+	float: left;
+}

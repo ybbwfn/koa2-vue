@@ -1,0 +1,53 @@
+<view>
+  <view class='y-content bg-fff'>
+    <view class='y-list-cell'>
+      <view class='y-list-title'>收支</view>
+      <view class='y-list-desc'>
+        <radio-group class="radio-group" bindchange="radioChange">
+          <label class="radio">
+            <radio value="0" />花费
+          </label>
+          <label class="radio">
+            <radio value="1" />收入
+          </label>
+        </radio-group>
+      </view>
+    </view>
+    <view class='y-list-cell'>
+      <view class='y-list-title'>金额</view>
+      <view class='y-list-desc'>
+        <input bindinput="bindKeyInput" type='text' />
+      </view>
+    </view>
+    <view class='y-list-cell'>
+      <view class='y-list-title'>类别</view>
+      <view class='y-list-desc'>
+        <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+          <view class="picker">
+            {{array[index]}}
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class='y-list-cell'>
+      <view class='y-list-title'>日期</view>
+      <view class='y-list-desc'>
+        <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+          <view class="picker">
+            {{date}}
+          </view>
+        </picker>
+      </view>
+    </view>
+		    <view class='y-list-cell'>
+      <view class='y-list-title'>备注</view>
+      <view class='y-list-desc fl' style='width:440rpx'>
+				<input type='text' bindinput="bindDesc"></input>
+      </view>
+    </view>
+    <view class='mar-t20'>
+      <button type='warn' bindtap="onConfirm">确定</button>
+    </view>
+  </view>
+
+</view>

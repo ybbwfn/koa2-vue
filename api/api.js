@@ -1,6 +1,92 @@
 var router = require('koa-router')();
 var userModel = require('./sql.js')
+var account = require('./account_sql.js')
 var moment = require('moment')
+                             //加载http,因为我们用的是http.request，这个理所当然要加载
+                             
+
+    // get getOpenId
+    router.get('/api/getOpenId', async(ctx, next) => {
+        var codeStr = ctx.request.querystring.split('=')[1];
+        await account.getOpenId(codeStr).then((res) => {
+            ctx.body = {
+                data: {openid:res.openid},
+                success: true,
+                error_msg: null
+            };
+        }).catch(() => {
+            ctx.body = {
+                data: '失败',
+                success: false,
+                error_msg: "失败"
+            };
+        })
+    })
+        // post searchAccount
+router.post('/api/searchAccount', async(ctx, next) => {
+    var openid = ctx.request.body.openid;;
+    var currentPage = ctx.request.body.currentPage;
+    var pageSize = ctx.request.body.pageSize;
+    var startDate = ctx.request.body.date+'-01';
+    let dateStr=ctx.request.body.date.split("-");
+    var endDate ='';
+    if(dateStr[1]==12){
+        endDate=(dateStr[0]-0)+1+'-01-01'
+    }else{
+        endDate=dateStr[0]+'-'+((dateStr[1]-0)+1)+'-01'
+    }
+
+    var total = await account.searchTotal([openid], 'account_list').then(restotal => {
+        return restotal[0].total;
+    }).catch(() => {
+        ctx.body = {
+            data: '查询失败',
+            success: false,
+            error_msg: "查询失败"
+        };
+    });
+    //console.log([openid,startDate,endDate ,(currentPage - 1) * pageSize, pageSize - 0])
+    await account.searchAccount([openid,startDate,endDate ,(currentPage - 1) * pageSize, pageSize - 0]).then(result => {
+
+        ctx.body = {
+            data: { data: result, total, pageCount: Math.ceil(total / pageSize) },
+            success: true,
+            error_msg: null
+        };
+
+    }).catch(() => {
+        ctx.body = {
+            data: '查询失败',
+            success: false,
+            error_msg: "查询失败"
+        };
+    })
+})
+    // post 发表心情
+    router.post('/api/addAccount', async(ctx, next) => {
+        
+        let ctxInfo = ctx.request.body;
+        var accountType = ctxInfo.accountType+'';
+        var money = ctxInfo.money;
+        var type = ctxInfo.type;
+        var createdate = ctxInfo.createdate;
+        var des = ctxInfo.des;
+        var openid = ctxInfo.openid;
+        await account.addAccount([accountType,openid,money,type,createdate,des]).then(() => {
+            ctx.body = {
+                data: '成功',
+                success: true,
+                error_msg: null
+            };
+        }).catch(() => {
+            ctx.body = {
+                data: '失败',
+                success: false,
+                error_msg: "失败"
+            };
+        })
+    })
+
 
 // post 查询心情
 router.post('/api/searchMood', async(ctx, next) => {

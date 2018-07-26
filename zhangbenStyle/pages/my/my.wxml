@@ -1,0 +1,39 @@
+<view>
+  <view class="clear mar-l20">
+    <view class="touxiang fl">
+      <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <text class="fl company">{{person.comName}}</text>
+  </view>
+  <view class="y-list y-title mar-t20">
+    <text class="text-l">收支信息</text>
+  </view>
+
+  <view class='y-list'>
+	  <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+    <view class="picker">
+      日期: {{date}}
+    </view>
+  </picker>
+
+  </view>
+  <view class="y-list">
+    <text class="text-l color666">额度状态</text>
+    <text class="text-r color333">{{person.creditLineStatus}}</text>
+  </view>
+  <view class="y-list">
+    <text class="text-l color666">收入</text>
+    <text class="text-r color333">{{person.maxFinCreditLine}}</text>
+  </view>
+  <view class="y-list">
+    <text class="text-l color666">花费</text>
+    <text class="text-r color333">{{person.usedFinCreditLine}}</text>
+  </view>
+  <view class="y-list">
+    <text class="text-l color666">收支比重</text>
+    <text class="text-r color333">{{person.availableCredit}}</text>
+  </view>
+
+
+  <button bindtap='clearLogin' type="warn" plain="true" class="y-handle">导出excel</button>
+</view>

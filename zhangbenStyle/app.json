@@ -1,0 +1,41 @@
+{
+	"pages": [
+		"pages/index/index",
+		"pages/order/order",
+		"pages/start/start",
+		"pages/my/my",
+		"pages/logs/logs"
+	],
+	"window": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationBarTitleText": "账本",
+		"navigationBarTextStyle": "black"
+	},
+	"tabBar": {
+		"color": "#999",
+		"selectedColor": "#E45650",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "img/icon_home@2x.png",
+				"selectedIconPath": "img/icon_home_selected@2x.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/order/order",
+				"iconPath": "img/icon_order@2x.png",
+				"selectedIconPath": "img/icon_order_selected@2x.png",
+				"text": "分析"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"iconPath": "img/icon_mine@2x.png",
+				"selectedIconPath": "img/icon_mine_selected@2x.png",
+				"text": "我的"
+			}
+		]
+	}
+}

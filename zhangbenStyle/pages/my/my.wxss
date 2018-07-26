@@ -1,0 +1,33 @@
+page{height: 100%;position: relative}
+.touxiang{
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.company{
+    line-height:120rpx;
+    margin-left: 24rpx;
+}
+.y-list{
+    padding:26rpx 30rpx;
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+}
+.y-list text{
+    font-size: 28rpx;
+}
+.y-list text{
+    flex: 1;
+}
+.y-title{
+    background-color: #f0f0f0;
+    font-size: 30rpx;
+    color: #4A4A4A;
+}
+.y-handle{
+    position: absolute;
+    left: 30rpx;
+    right: 30rpx;
+    bottom: 60rpx;
+}

@@ -1,0 +1,60 @@
+<!--pages/order/order.wxml-->
+<view class="body">
+  <view class="weui-flex y-flex text-c">
+    <view class="weui-flex__item">
+			  <picker mode="date" value="{{date}}" start="2015-09-01" end="2018-09-01" bindchange="bindDateChange" fields="month" style='margin-top:34rpx'>
+          <view class="picker">
+            {{date}}
+						<span class="triangle-down" wx:if="{{!hasMask}}"></span>
+        <span class="triangle-up" wx:if="{{hasMask}}"></span>
+          </view>
+        </picker>
+
+    </view>
+    <view class="weui-flex__item">
+      <view class="font14">收入（元）</view>
+      <view class="font18">1111</view>
+    </view>
+    <view class="weui-flex__item">
+      <view class="font14">支出（元）</view>
+      <view class="font18">1111</view>
+    </view>
+  </view>
+  <view class="swiper-tab mar-t10">
+    <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">
+      <span class="fonts {{currentTab== 0 ? 'borderBottom' : ''}}" data-current="0">流水</span>
+    </view>
+    <view class="swiper-tab-list {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">
+      <span class="fonts {{currentTab== 1 ? 'borderBottom' : ''}}" data-current="1">报表</span>
+    </view>
+  </view>
+
+  <!-- bindscrolltoupper ='uplower' -->
+  <!-- 模块 -->
+  <view class='mar-t10' style='height:{{winHeight-130}}px;overflow:auto'>
+    <view hidden='{{currentTab==1}}'>
+      <view wx:for="{{list}}" data-id="{{index}}" wx:key="{{index}}" class='y-table'>
+        <view class="weui-flex {{index%2==0?'bg-odd':'bg-even'}}">
+          <view class='weui-flex__item'>01日-吃饭</view>
+          <view class='weui-flex__item'>支出-食物</view>
+          <view class='weui-flex__item'>111</view>
+        </view>
+      </view>
+      <view class="no_Con" wx:if="{{list.length == 0}}">
+        <image mode="scaleToFill" src="../../img/icon_nothing@2x.png"></image>
+        <view class="no_ConText">
+          <text>无内容</text>
+        </view>
+      </view>
+    </view>
+    <view hidden='{{currentTab==0}}'>
+      <canvas canvas-id="pieCanvas" class="canvas" disable-scroll="true" style="height:600rpx"></canvas>
+      <canvas canvas-id="lineCanvas" disable-scroll="true" class="canvas" style="height:600rpx"></canvas>
+    </view>
+  </view>
+
+  <!-- 添加 -->
+  <view class="addIcon" catchtap="goToApply">
+    <image src="{{imageUrl}}" class="goToApply" style="width:126rpx;height: 132rpx"></image>
+  </view>
+</view>

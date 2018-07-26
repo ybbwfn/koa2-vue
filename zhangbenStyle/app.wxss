@@ -1,0 +1,15 @@
+/**app.wxss**/
+@import './utils/wxss/weui.wxss';
+@import './utils/wxss/reset.wxss';
+.page-container{
+  height: 100%;
+}
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 118rpx 0;
+  box-sizing: border-box;
+} 

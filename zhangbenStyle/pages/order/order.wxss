@@ -1,0 +1,105 @@
+/* pages/order/order.wxss */
+
+.body{
+  background-color: #F9F9F9;
+}
+.no_Con .no_ConText{
+  font-family: PingFangSC-Regular;
+  font-size: 30rpx;
+  color: #666666;
+  line-height: 30rpx;
+	text-align: center;
+}
+.fonts{
+	font-size: 30rpx;  
+	/* font-weight: bold; */
+  /* color: #666666;    */
+} 
+.borderBottom{
+	padding: 0rpx 30rpx 30rpx 30rpx;
+	border-bottom: 6rpx solid #E45650;
+	/* padding-bottom:40rpx; */
+}
+.swiper-tab{  
+    width: 100%;  
+   /*  border-bottom: 2rpx solid #777777;   */
+    text-align: center;  
+    line-height: 80rpx;
+}  
+.swiper-tab-list{  
+    width: 50%;  
+   height: 95rpx;
+   display: inline-block;
+   background-color: #fff;
+   color: #666666;
+}  
+.on{ 
+	color: #E45650;  
+}  
+  
+.swiper-box{ 
+	display: block;
+	height: 100%; 
+	width: 100%; 
+	overflow: hidden;
+ }  
+.swiper-box view{  
+    text-align: center;  
+}
+
+/* 上下箭头 */
+.triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 12rpx solid transparent;
+    border-right: 12rpx solid transparent;
+    border-bottom: 12rpx solid #666;
+    display: inline-block;
+    margin-left: 8rpx;
+}
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 12rpx solid transparent;
+    border-right: 12rpx solid transparent;
+    border-top: 15rpx solid #666;
+    display: inline-block;
+    margin-left: 8rpx;
+}
+
+
+.weui-flex.y-flex{
+	margin-top: 20rpx;
+	height: 120rpx;
+	background: #FF6A62;
+	color: #fff;
+}
+.weui-flex__item{
+	border-right: 1px dotted #f1f1f1;
+}
+.weui-flex__item:last-child{
+	border-right: none;
+}
+.y-table{
+	padding:10rpx 30rpx;
+	color: #444;
+	font-size: 36rpx;
+}
+.y-table .weui-flex{
+	border-bottom: 1px solid #ccc;
+}
+ .bg-odd{
+	background: #05DB6A;
+	text-align: center;
+	color:#fff;
+}
+.bg-even{
+	background: #FA938E;
+	text-align: center;
+	color:#fff;
+} 
+.addIcon{
+	position: fixed;
+	bottom: 100rpx;
+	right: 40rpx;
+}
