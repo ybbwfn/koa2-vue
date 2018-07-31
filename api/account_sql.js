@@ -52,6 +52,15 @@ let searchAccount = function(value) {
         LIMIT ?,?;`
     return query(_sql, value)
 }
+// 收支查询
+let searchAccountTypeByDate = function(value){
+    let _sql=`SELECT SUM(money) as sum FROM account_list         
+				WHERE openid=?
+				AND accountType=?
+                AND createdate >=? 
+                AND createdate <? ;`
+                return query(_sql, value)
+}
 // 查询总条数
 let searchTotal = function(value, tableName) {
     let _sql = `select count(*) as total from ${tableName} WHERE openid=?`
@@ -93,5 +102,6 @@ module.exports = {
     addAccount,
     getOpenId,
     searchAccount,
-    searchTotal
+    searchTotal,
+    searchAccountTypeByDate,
 }

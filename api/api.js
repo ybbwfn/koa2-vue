@@ -62,6 +62,31 @@ router.post('/api/searchAccount', async(ctx, next) => {
         };
     })
 })
+router.post('/api/searchAccountTypeByDate', async(ctx, next) => {
+    var openid = ctx.request.body.openid;;
+    var startDate = ctx.request.body.date+'-01';
+    let dateStr=ctx.request.body.date.split("-");
+    var endDate ='';
+    if(dateStr[1]==12){
+        endDate=(dateStr[0]-0)+1+'-01-01'
+    }else{
+        endDate=dateStr[0]+'-'+((dateStr[1]-0)+1)+'-01'
+    }
+    var income= await account.searchAccountTypeByDate([openid,1,startDate,endDate ]).then(result => {
+        return result[0].sum;
+
+    }).catch(() => { ctx.body = {data: '查询失败',success: false,error_msg: "查询失败"};})
+    await account.searchAccountTypeByDate([openid,0,startDate,endDate ]).then(result => {
+        var pay=result[0].sum;
+        ctx.body = {
+            income:income,
+            pay:pay,
+            success: true,
+            error_msg: null
+        };
+
+    }).catch(() => { ctx.body = {data: '查询失败',success: false,error_msg: "查询失败"};})
+})
     // post 发表心情
     router.post('/api/addAccount', async(ctx, next) => {
         
